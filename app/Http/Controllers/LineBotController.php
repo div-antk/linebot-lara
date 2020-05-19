@@ -10,4 +10,9 @@ class LineBotController extends Controller
     {
         return view('linebot.index');
     }
+
+    public function parrot()
+    {
+        
+    }
 }

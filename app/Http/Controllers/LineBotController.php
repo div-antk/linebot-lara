@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 use LINE\LINEBot;
+use LINE\LINEBot\Event\MessageEvent\TextMessage;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 
 class LineBotController extends Controller
@@ -22,7 +23,7 @@ class LineBotController extends Controller
 
         // 環境変数を利用してインスタンスを作成
         $httpClient = new CurlHTTPClient(env('LINE_ACCESS_TOKEN'));
-        $linebot = new LINEBot($httpClient, ['channelSecret' => env('LINE_CHANNEL_SECRET')]);
+        $lineBot = new LINEBot($httpClient, ['channelSecret' => env('LINE_CHANNEL_SECRET')]);
     
         // 署名の検証
         $signature = $request->header('x-line-signature');
@@ -35,5 +36,17 @@ class LineBotController extends Controller
         $events = $lineBot->parseEventRequest($request->getContent(), $signature);
         
         Log::debug($events);
+
+        // オウム返し
+        foreach ($events as $event) {
+            if (!($event instanceof TextMessage)) {
+                Log::debug('Non text message has come');
+                continue;
+            }
+
+            $replyToken = $event->getReplyToken();
+            $replyText = $event->getText();
+            $lineBot->replyText($replyToken, $replyText);
+        }
     }
 }

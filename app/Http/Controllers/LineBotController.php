@@ -29,5 +29,11 @@ class LineBotController extends Controller
         if (!$lineBot->validateSignature($request->getContent(), $signature)) {
             abort(400, 'Invalid signature');
         }
+
+        // リクエストからイベントを取り出す
+        // テキスト、画像、スタンプといったメッセージの種類に応じたクラスのインスタンスを返す
+        $events = $lineBot->parseEventRequest($request->getContent(), $signature);
+        
+        Log::debug($events);
     }
 }

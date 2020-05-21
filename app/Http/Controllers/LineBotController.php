@@ -20,7 +20,14 @@ class LineBotController extends Controller
         Log::debug($request->header());
         Log::debug($request->input());
 
+        // 環境変数を利用してインスタンスを作成
         $httpClient = new CurlHTTPClient(env('LINE_ACCESS_TOKEN'));
         $linebot = new LINEBot($httpClient, ['channelSecret' => env('LINE_CHANNEL_SECRET')]);
+    
+        // 署名の検証
+        $signature = $request->header('x-line-signature');
+        if (!$lineBot->validateSignature($request->getContent(), $signature)) {
+            abort(400, 'Invalid signature');
+        }
     }
 }

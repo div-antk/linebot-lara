@@ -17,6 +17,12 @@ class RestaurantBubbleBuilder implements ContainerBuilder
   private $longitude;
   private $phoneNumber;
   private $restaurantUrl;
+
+  public static function builder(): RestaurantBubbleBuilder
+  {
+    // 自クラスのインスタンスを作成し、メソッド呼び出し元に返す
+    return new self();
+  }
 }
 
 ?>

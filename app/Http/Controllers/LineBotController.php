@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\Gurunavi;
-use App\Service\RestaurantBubbleBuilder;
+use App\Services\RestaurantBubbleBuilder;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -78,7 +78,7 @@ class LineBotController extends Controller
             }
 
             $carousel = CarouselContainerBuilder::builder();
-            $carousel->setContants($bubbles);
+            $carousel->setContents($bubbles);
 
             $flex = FlexMessageBuilder::builder();
             $flex->setAltText('飲食店検索結果');

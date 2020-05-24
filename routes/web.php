@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/hello', 'LinebotController@index');
+Route::get('/hello', 'LineBotController@index');
 
 Route::get('/', function () {
     return view('welcome');
